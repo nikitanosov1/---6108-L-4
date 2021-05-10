@@ -1,1 +1,2 @@
-if[if] a[id] >[co] b[id] then[th] 
+if[if] 2[vl] then[th] e[id] =[eq] 2[vl] +[ao] 3[vl] +[ao] 4[vl] end[en] 
+6 sc
