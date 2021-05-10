@@ -65,8 +65,8 @@ end
 #include <ctype.h>
 
 using namespace std;
-enum M { co, eq, ao, sc, vl, id, wl, nt, lo, fi, th, ei, en };
-const char* types[] = { "co","eq","ao","sc","vl","id","wl", "nt", "lo", "if", "th", "ei", "en" };
+enum M { co, eq, ao, sc, vl, id, wl, no, lo, fi, th, ei, en };
+const char* types[] = { "co","eq","ao","sc","vl","id","wl", "no", "lo", "if", "th", "ei", "en" };
 enum states {S, A, B, H, E, C, D, F, G, eA, eB, eH, eE};
 states matrix[9][5]
 {
@@ -151,7 +151,7 @@ char* inputFromFile()  // Получение данных из файла "input
 int iskw(const char* const str) // Проверка str на ключевое слово. Возвращает номер ключевого слова, иначе -1
 {
     // Ключевое слово [kw]: not, and, or, if, then, elseif, end
-    if (!strcmp(str, "not")) return nt;
+    if (!strcmp(str, "not")) return no;
     if (!strcmp(str, "and")) return lo;
     if (!strcmp(str, "or")) return lo;
     if (!strcmp(str, "if")) return fi;
@@ -325,29 +325,18 @@ size_t matrix2[13][5]
 };
 */
 
-/*
-void printError(size_t prevState, const vector<Lex>& v, size_t i);
-{
-    ofstream foutp("output.txt");   // Открытие выходного файла
-    //for (size_t i = 0; i < v.size(); ++i) foutp << v[i].lex << '[' << types[v[i].type] << ']' << ' ';
-    
-    
-    foutp.close();  // Закрытие выходного файла
-}
-
-*/
 size_t matrix2[13][19]
 {
 //      0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18,  
        20, 20,  3, 20, 20, 20, 20, 20, 20, 20, 20, 12, 20, 20, 20, 20, 20, 20, 20,    // co (> > <>)
        20, 20,  3, 20, 20, 20, 20,  8, 20, 20, 20, 12, 20, 20, 20, 20, 17, 20, 20,    // eq (=)
-       20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,    // ao (+/-*)
+       20, 20, 20, 20, 20, 20, 20, 20, 20,  8, 20, 20, 20, 20, 20, 20, 20, 20, 17,    // ao (+/-*)
        20, 20, 20, 20, 20, 20, 20, 20, 20,  6, 20, 20, 20, 20, 20, 20, 20, 20, 15,    // sc (;)
        20,  2, 20,  5,  2,  2, 20, 20,  9, 20, 11, 20, 14, 11, 11, 20, 20, 18, 20,    // vl (228)
        20,  2, 20,  5,  2,  2,  7, 20,  9, 20, 11, 20, 14, 11, 11, 16, 20, 18, 20,    // id (abc123)
        20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,    // wl (Er)
-       20,  4, 20, 20, 20,  4, 20, 20, 20, 20, 13, 20, 20, 20, 13, 20, 20, 20, 20,    // nt (not)
-       20, 20, 20, 20, 20,  1, 20, 20, 20, 20, 20, 20, 20, 20, 10, 20, 20, 20, 20,    // lo (and/or)
+       20,  4, 20, 20, 20,  4, 20, 20, 20, 20, 13, 20, 20, 20, 13, 20, 20, 20, 20,    // no (not)
+       20, 20,  1, 20, 20,  1, 20, 20, 20, 20, 20, 10, 20, 20, 10, 20, 20, 20, 20,    // lo (and/or)
         1, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,    // fi (if)
        20, 20, 6,   6, 20,  6, 20, 20, 20, 20, 20, 15, 15, 20, 15, 20, 20, 20, 20,    // th (then)
        20, 20, 20, 20, 20, 20, 20, 20, 20, 10, 20, 20, 20, 20, 20, 20, 20, 20, 20,    // ei (elseif)
@@ -372,7 +361,7 @@ void parser(const char* const text)
             switch (prevState){
             case(0): fout << " if"; break;
             case(10):
-            case(1): fout << " vl id nt"; break;
+            case(1): fout << " vl id no"; break;
             case(11):
             case(2): fout << " co eq th"; break;
             case(12):
@@ -380,7 +369,7 @@ void parser(const char* const text)
             case(13):
             case(4): fout << " vl id"; break;
             case(14):
-            case(5): fout << " vl id nt lo th"; break;
+            case(5): fout << " vl id no lo th"; break;
             case(15):
             case(6): fout << " id"; break;
             case(16):
@@ -388,7 +377,7 @@ void parser(const char* const text)
             case(17):
             case(8): fout << " vl id"; break;
             case(18):
-            case(9): fout << " sc"; break;
+            case(9): fout << " ao sc"; break;
             }
             break;
         }
@@ -398,6 +387,7 @@ void parser(const char* const text)
         fout << "OK";
     }
     fout.close();
+    for (size_t i = 0; i < v.size(); ++i) delete[] v[i].lex;
 }
 
 int main()
