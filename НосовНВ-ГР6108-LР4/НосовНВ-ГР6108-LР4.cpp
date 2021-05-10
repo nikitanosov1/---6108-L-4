@@ -307,10 +307,10 @@ end
 6) AV  →  O | AV ao O
 */
 
-
+/*
 size_t matrix2[13][5]
 {
-//     0, 1, 2, 3, 4, 5, 
+//     0, 1, 2, 3, 4, 5,
         ,  , 3,  ,  ,  , // ,  ,  ,  ,          // co (> > <>)
         ,  , 3,  ,  ,  , // ,  ,  ,  ,          // eq (=)
         ,  ,  ,  ,  ,  , // ,  ,  ,  ,          // ao (+/-*)
@@ -325,17 +325,41 @@ size_t matrix2[13][5]
         ,  ,  ,  ,  ,  , // ,  ,  ,  ,          // ei (elseif)
         ,  ,  ,  ,  ,  , // ,  ,  ,  ,          // en (end)
 };
+*/
+size_t matrix2[13][6]
+{
+//     0, 1, 2, 3, 4, 5, 
+       7, 7, 3, 7, 7, 7, // ,  ,  ,  ,          // co (> > <>)
+       7, 7, 3, 7, 7, 7, // ,  ,  ,  ,          // eq (=)
+       7, 7, 7, 7, 7, 7, // ,  ,  ,  ,          // ao (+/-*)
+       7, 7, 7, 7, 7, 7, // ,  ,  ,  ,          // sc (;)
+       7, 2, 7, 5, 2, 2, // ,  ,  ,  ,          // vl (228)
+       7, 2, 7, 5, 2, 2, // ,  ,  ,  ,          // id (abc123)
+       7, 7, 7, 7, 7, 7, // ,  ,  ,  ,          // wl (Er)
+       7, 4, 7, 7, 7, 4, // ,  ,  ,  ,          // nt (not)
+       7, 7, 7, 7, 7, 1, // ,  ,  ,  ,          // lo (and/or)
+       1, 7, 7, 7, 7, 7, // ,  ,  ,  ,          // fi (if)
+       7, 7, 6, 6, 7, 6, // ,  ,  ,  ,          // th (then)
+       7, 7, 7, 7, 7, 7, // ,  ,  ,  ,          // ei (elseif)
+       7, 7, 7, 7, 7, 7, // ,  ,  ,  ,          // en (end)
+};
 
-void SyntaxAnalysis(const char* const text)
+void parser(const char* const text)
 {
     vector<Lex> v = lexAnalysis(text);
-    LexStates state = S1;
+    size_t state = 0;
     for(int i = 0; i < v.size(); i++)
     {
         state = matrix2[v[i].type][state];
-
-    
-    
+        if (state == 7)
+        {
+            cout << "ERROR";
+            break;
+        }
+    }
+    if (state == 7)
+    {
+        cout << "ERROR";
     }
 
 }
@@ -355,10 +379,11 @@ void saveToFile(const vector<Lex>& v)
 int main()
 {
     char* text = inputFromFile();
-    vector<Lex> v = lexAnalysis(text);
-    cout << v.size();
-    saveToFile(v);
-    for (size_t i = 0; i < v.size(); ++i) delete[] v[i].lex;
+    parser(text);
+    //vector<Lex> v = lexAnalysis(text);
+    //cout << v.size();
+    //saveToFile(v);
+    //for (size_t i = 0; i < v.size(); ++i) delete[] v[i].lex;
     delete[] text;
     return 0;
 }
