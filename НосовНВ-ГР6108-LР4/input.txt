@@ -1,1 +1,1 @@
-if 2 then e=2+3+4 end
+if a and b then g=5 end
