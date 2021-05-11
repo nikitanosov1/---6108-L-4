@@ -268,6 +268,19 @@ size_t matrix2[13][21] // Матрица для синтаксического �
 void parser(const char* const text)
 {
     vector<Lex> v = lexAnalysis(text);
+    /*
+    size_t i = 0;
+    while (++i < v.size())
+    {
+        if (v[i].lex[0] == '-' && v[i+1].type == vl && v[i-1].type != id && v[i-1].type != vl)
+        {
+            delete[] v[i].lex;
+            v[i+1].lex = '-' + v[i+1].lex;
+            v.erase(v.begin() + i);
+        }
+    }
+    */
+
     size_t state = 0;
     size_t prevState = 0;
     ofstream fout("output.txt");

@@ -1,1 +1,3 @@
-if a and b then g=5 end
+if a then
+	c = -123
+end

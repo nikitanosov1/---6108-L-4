@@ -1,2 +1,2 @@
-if[if] a[id] and[lo] b[id] then[th] g[id] =[eq] 5[vl] end[en] 
-OK
+if[if] a[id] then[th] c[id] =[eq] -[ao] 123[vl] end[en] 
+5 id vl
